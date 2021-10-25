@@ -2,7 +2,6 @@ package com.itismeucci.bencinicangelosi;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
@@ -13,12 +12,14 @@ public class ServerThread extends Thread{
     String stringaModificata = null;
     BufferedReader inDalClient;
     DataOutputStream outVersoClient;
-    char chiaveComando = '/';
+    Comandi comandi;
+    //char chiaveComando = '&';
 
 
-    public ServerThread(Socket socket, MultiServer multiServer){
+    public ServerThread(Socket socket, MultiServer multiServer, Comandi comandi){
         this.client = socket;
         this.multiServer = multiServer;
+        this.comandi = comandi;
     }
 
     public void comunica() throws Exception{
@@ -32,8 +33,8 @@ public class ServerThread extends Thread{
 
 
 
-    public boolean isKey(String testoRicevuto){
-        if(testoRicevuto.charAt(0) == '&'){
+    /* public boolean isKey(String testoRicevuto){
+        if(testoRicevuto.charAt(0) == chiaveComando){
             return true;
         }
         return false;
@@ -50,28 +51,37 @@ public class ServerThread extends Thread{
 
     public void commandReader(String testoRicevuto){
         for(int i = 0; i > testoRicevuto.length(); i++){
-            if(testoRicevuto.charAt(1) == 'L' || testoRicevuto.charAt(1) == 'l'){
-                //Esegue il logout dell'utente
 
-            }else if(testoRicevuto.charAt(1) == 'T' || testoRicevuto.charAt(1) == 't'){
-                //Invia Messaggio Singola Persona
-
-            }else if(testoRicevuto.charAt(1) == 'A' || testoRicevuto.charAt(1) == 'a'){
-                //Invia messaggio a tutti
-
-            }else if(testoRicevuto.charAt(1) == 'B' || testoRicevuto.charAt(1) == 'b'){
-                //Banna l'utente selezionato
-
-            }else{
-                try {
-                    outVersoClient.writeBytes("Il comando inserito non è supportato");
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+            switch (testoRicevuto.charAt(1)) {
+                case 'E':
+                    //Esegue il logout dell'utente
+                    break;
+                case 'T':
+                    //Invia Messaggio Singola Persona
+                    break;
+                case 'A':
+                    //Invia messaggio a tutti
+                    break;
+                case 'B':
+                    //Banna l'utente selezionato
+                    break;
+                case 'L':
+                    //Mostra gli utenti connessi
+                    break;
+                case '?':
+                    //Mostra una lista dei comandi disponibili
+                    break;
+                default:
+                    try {
+                        outVersoClient.writeBytes("Il comando inserito non è supportato.\nFai "+ chiaveComando +"? per una lista dei comandi disponibili");
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    break;
             }
         }
-    }
+    } */
     
     public void close() throws Exception{
         outVersoClient.close();
