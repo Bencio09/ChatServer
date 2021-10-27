@@ -16,7 +16,7 @@ public class ServerThread extends Thread{
     //char chiaveComando = '&';
 
 
-    public ServerThread(Socket socket, MultiServer multiServer, Comandi comandi){
+    public ServerThread(Socket socket, MultiServer multiServer){
         this.client = socket;
         this.multiServer = multiServer;
         this.comandi = comandi;
