@@ -8,85 +8,45 @@ import java.net.Socket;
 public class ServerThread extends Thread{
     MultiServer multiServer = null;
     Socket client = null;
+    String nomeUtente = null;
     String stringaRicevuta = null;
-    String stringaModificata = null;
     BufferedReader inDalClient;
     DataOutputStream outVersoClient;
     Comandi comandi;
-    //char chiaveComando = '&';
-
 
     public ServerThread(Socket socket, MultiServer multiServer){
         this.client = socket;
         this.multiServer = multiServer;
-        this.comandi = comandi;
+        this.comandi = new Comandi(this);
+        
+        try {
+            inDalClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            outVersoClient = new DataOutputStream(client.getOutputStream());
+            this.nomeUtente = inDalClient.readLine();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
     }
 
     public void comunica() throws Exception{
-        inDalClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        outVersoClient = new DataOutputStream(client.getOutputStream());
-
         for(;;){
-            
+            comandi.commandReader(inDalClient.readLine());
         }
     }
-
-
-
-    /* public boolean isKey(String testoRicevuto){
-        if(testoRicevuto.charAt(0) == chiaveComando){
-            return true;
-        }
-        return false;
-    }
-
-    public int spaceIndex(String testoRicevuto){
-        for(int i = 0; i > testoRicevuto.length(); i++){
-            if(testoRicevuto.charAt(i) == ' '){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public void commandReader(String testoRicevuto){
-        for(int i = 0; i > testoRicevuto.length(); i++){
-
-            switch (testoRicevuto.charAt(1)) {
-                case 'E':
-                    //Esegue il logout dell'utente
-                    break;
-                case 'T':
-                    //Invia Messaggio Singola Persona
-                    break;
-                case 'A':
-                    //Invia messaggio a tutti
-                    break;
-                case 'B':
-                    //Banna l'utente selezionato
-                    break;
-                case 'L':
-                    //Mostra gli utenti connessi
-                    break;
-                case '?':
-                    //Mostra una lista dei comandi disponibili
-                    break;
-                default:
-                    try {
-                        outVersoClient.writeBytes("Il comando inserito non è supportato.\nFai "+ chiaveComando +"? per una lista dei comandi disponibili");
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    break;
-            }
-        }
-    } */
     
     public void close() throws Exception{
         outVersoClient.close();
         inDalClient.close();
         System.out.println("9 Chiusura socket" + client);
         client.close();
+    }
+
+    public void run(){
+        try {
+            comunica();
+        } catch (Exception e) {
+            System.out.println("Non è stato possibile eseguire il metodo comunica\n");
+        }
     }
 }
