@@ -70,4 +70,33 @@ public class Comandi {
         System.out.println(chiaveComando + "L ---> Serve per listare (mostrare) tutti gli utenti della chat, la sintassi è: " + chiaveComando + "L\n");
         System.out.println(chiaveComando + "? ---> Mostra questo messaggio, la sintassi è: " + chiaveComando + "?\n");
     }
+
+    public void logout(){
+        try {
+            for(int i = 0; i < serverThread.multiServer.threadList.size(); i++){
+                if(serverThread.multiServer.threadList.get(i).nomeUtente.equals(this.serverThread.nomeUtente)){
+                    serverThread.multiServer.threadList.remove(i);
+                }
+                serverThread.multiServer.threadList.get(i).outVersoClient.writeBytes(this.serverThread.nomeUtente + " si è disconnesso\n"); 
+            }
+            this.serverThread.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void messageTell(String testoDaInviare){
+        for(int i = 0; i < testoDaInviare.length(); i++){
+            testoDaInviare.charAt(i)
+        }
+        try {
+            for(int i = 0; i < serverThread.multiServer.threadList.size(); i++){
+                if(!serverThread.multiServer.threadList.get(i).nomeUtente.equals(this.serverThread.nomeUtente)){
+                    serverThread.multiServer.threadList.get(i).outVersoClient.writeBytes();
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
 }
