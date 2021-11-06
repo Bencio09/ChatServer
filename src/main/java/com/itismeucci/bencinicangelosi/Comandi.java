@@ -45,9 +45,9 @@ public class Comandi {
             case 'A':
                 //Invia messaggio a tutti
                 break;
-            case 'B':
+           /*  case 'B':
                 //Banna l'utente selezionato
-                break;
+                break; */
             case 'L':
                 //Mostra gli utenti connessi
                 break;
@@ -69,7 +69,7 @@ public class Comandi {
         System.out.println(chiaveComando + "E ---> Serve per eseguire il logout dalla chat, la sintassi è: " + chiaveComando + "E\n");
         System.out.println(chiaveComando + "T ---> Serve per inviare un messaggio a un solo utente in particolare, la sintassi è: " + chiaveComando + "T <NOME UTENTE> <MESSAGGIO>\n");
         System.out.println(chiaveComando + "A ---> Serve per inviare un messaggio a tutti i partecipanti alla chat, la sintassi è: " + chiaveComando + "A <MESSAGGIO>\n");
-        System.out.println(chiaveComando + "B ---> Serve per bannare (rimuovere) dalla chat un utente specifico, la sintassi è: " + chiaveComando + "B <NOME UTENTE>\n");
+        //System.out.println(chiaveComando + "B ---> Serve per bannare (rimuovere) dalla chat un utente specifico, la sintassi è: " + chiaveComando + "B <NOME UTENTE>\n");
         System.out.println(chiaveComando + "L ---> Serve per listare (mostrare) tutti gli utenti della chat, la sintassi è: " + chiaveComando + "L\n");
         System.out.println(chiaveComando + "? ---> Mostra questo messaggio, la sintassi è: " + chiaveComando + "?\n");
     }
@@ -103,6 +103,31 @@ public class Comandi {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        }
+    }
+
+    public void messageToAll(String testoDaInviare){
+        for(int i = 2; i < testoDaInviare.length(); i++){
+            charList.add(testoDaInviare.charAt(i));
+        }
+        for(int i = 0; i < charList.size(); i++){
+            testoDaInviare = charList.get(i).toString(charList.get(i).charValue());
+        }
+        try {
+            for(int i = 0; i < serverThread.multiServer.threadList.size(); i++){
+                if(this.serverThread.nomeUtente.equals(serverThread.multiServer.threadList.get(i).nomeUtente)){
+                    serverThread.multiServer.threadList.get(i).outVersoClient.writeBytes(testoDaInviare);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void listUser(){
+        System.out.println("Ecco la lista degli utenti connessi\n");
+        for(int i = 0; i < serverThread.multiServer.threadList.size(); i++){
+            System.out.println(serverThread.multiServer.threadList.get(i).nomeUtente + "\n");
         }
     }
 
