@@ -1,8 +1,11 @@
 package com.itismeucci.bencinicangelosi;
 
+import java.util.ArrayList;
+
 public class Comandi {
     char chiaveComando = '&';
     ServerThread serverThread;
+    ArrayList<Character> charList = new ArrayList<>();
 
     public Comandi(ServerThread serverThread){
         this.serverThread = serverThread;
@@ -86,17 +89,22 @@ public class Comandi {
     }
 
     public void messageTell(String testoDaInviare){
-        for(int i = 0; i < testoDaInviare.length(); i++){
-            testoDaInviare.charAt(i)
+        for(int i = 2; i < testoDaInviare.length(); i++){
+            charList.add(testoDaInviare.charAt(i));
+        }
+        for(int i = 0; i < charList.size(); i++){
+            testoDaInviare = charList.get(i).toString(charList.get(i).charValue());
         }
         try {
             for(int i = 0; i < serverThread.multiServer.threadList.size(); i++){
                 if(!serverThread.multiServer.threadList.get(i).nomeUtente.equals(this.serverThread.nomeUtente)){
-                    serverThread.multiServer.threadList.get(i).outVersoClient.writeBytes();
+                    serverThread.multiServer.threadList.get(i).outVersoClient.writeBytes(testoDaInviare);
                 }
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
+
+    
 }
