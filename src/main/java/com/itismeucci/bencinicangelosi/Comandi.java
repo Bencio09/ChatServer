@@ -93,7 +93,7 @@ public class Comandi {
             charList.add(testoDaInviare.charAt(i));
         }
         for(int i = 0; i < charList.size(); i++){
-            testoDaInviare = charList.get(i).toString(charList.get(i).charValue());
+            testoDaInviare = charList.get(i).toString();
         }
         try {
             for(int i = 0; i < serverThread.multiServer.threadList.size(); i++){
@@ -111,7 +111,7 @@ public class Comandi {
             charList.add(testoDaInviare.charAt(i));
         }
         for(int i = 0; i < charList.size(); i++){
-            testoDaInviare = charList.get(i).toString(charList.get(i).charValue());
+            testoDaInviare = charList.get(i).toString();
         }
         try {
             for(int i = 0; i < serverThread.multiServer.threadList.size(); i++){
