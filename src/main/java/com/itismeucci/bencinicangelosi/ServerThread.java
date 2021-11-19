@@ -2,6 +2,7 @@ package com.itismeucci.bencinicangelosi;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
@@ -13,6 +14,7 @@ public class ServerThread extends Thread{
     BufferedReader inDalClient;
     DataOutputStream outVersoClient;
     Comandi comandi;
+    boolean stato = true;
 
     public ServerThread(Socket socket, MultiServer multiServer){
         this.client = socket;
@@ -28,12 +30,6 @@ public class ServerThread extends Thread{
             System.exit(1);
         }
     }
-
-    public void comunica() throws Exception{
-        for(;;){
-            comandi.commandReader(inDalClient.readLine());
-        }
-    }
     
     public void close() throws Exception{
         outVersoClient.close();
@@ -44,9 +40,17 @@ public class ServerThread extends Thread{
 
     public void run(){
         try {
-            comunica();
+            login();
         } catch (Exception e) {
             System.out.println("Non è stato possibile eseguire il metodo comunica\n");
         }
+    }
+
+    public void login(){
+        boolean isAdded;
+
+        comandi.commandReader("&t Benvenuto!!!\nInserisci il tuo username");
+        
+        
     }
 }
