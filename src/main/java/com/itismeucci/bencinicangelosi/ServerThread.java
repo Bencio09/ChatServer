@@ -41,6 +41,10 @@ public class ServerThread extends Thread{
     public void run(){
         try {
             login();
+            for(;;){
+                stringaRicevuta = inDalClient.readLine();
+                comandi.commandReader(stringaRicevuta);
+            }
         } catch (Exception e) {
             System.out.println("Non è stato possibile eseguire il metodo comunica\n");
         }
@@ -53,4 +57,5 @@ public class ServerThread extends Thread{
         
         
     }
+
 }

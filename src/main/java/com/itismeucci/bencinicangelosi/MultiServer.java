@@ -3,14 +3,13 @@ package com.itismeucci.bencinicangelosi;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.KeyStore.Entry;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class MultiServer {
-    HashMap listaUtentiMap = new HashMap<>(String username, ServerThread serverThread);
     ArrayList<ServerThread> threadList = new ArrayList<>();
     ServerSocket serverSocket = null;
+
+
 
     public void start(){
         try {
@@ -18,11 +17,15 @@ public class MultiServer {
             for(;;){
                 System.out.println("1 Server in attesa...");
                 Socket socket = serverSocket.accept();
+
                 System.out.println("3 Server socket " + socket);
                 ServerThread serverThread = new ServerThread(socket, this);
+                addUser(serverThread);
                 serverThread.start();
 
-                threadList.add(serverThread);
+                for(int i = 0; i < threadList.size(); i++){
+                    threadList.get(i).outVersoClient.writeBytes(serverThread.nomeUtente + " è entrato nella chat!!!\n");
+                }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -50,22 +53,12 @@ public class MultiServer {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
     }
 
-    public boolean addUser(String username, ServerThread serverThread){
-        if(listaUtentiMap.containsKey(username)){
-            listaUtentiMap.put(username, serverThread);
-
-            return true;
-        }
-
-        return false;
+    public boolean addUser(ServerThread e){
+        return threadList.add(e);
     }
 
-    public void introduceToAll(){
-        String utentiConnessi = "&t" + String.join("&", listaUtentiMap.keySet());
 
-        for(
-    }
 }
+    

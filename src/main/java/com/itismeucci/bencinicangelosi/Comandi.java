@@ -65,7 +65,7 @@ public class Comandi {
         }
     }
 
-    public void helpMessage(){
+    public void helpMessage(String nomeUtente){
         System.out.println(chiaveComando + "E ---> Serve per eseguire il logout dalla chat, la sintassi è: " + chiaveComando + "E\n");
         System.out.println(chiaveComando + "T ---> Serve per inviare un messaggio a un solo utente in particolare, la sintassi è: " + chiaveComando + "T <NOME UTENTE> <MESSAGGIO>\n");
         System.out.println(chiaveComando + "A ---> Serve per inviare un messaggio a tutti i partecipanti alla chat, la sintassi è: " + chiaveComando + "A <MESSAGGIO>\n");
