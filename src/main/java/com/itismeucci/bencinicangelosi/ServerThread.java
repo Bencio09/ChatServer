@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class ServerThread extends Thread{
+public class ServerThread extends Thread
+{
     MultiServer multiServer = null;
     Socket client = null;
     String nomeUtente = null;
@@ -50,7 +51,7 @@ public class ServerThread extends Thread{
         }
     }
 
-    public void login(){
+    public void login()throws Exception{
         boolean isAdded;
 
         comandi.commandReader("&t Benvenuto!!!\nInserisci il tuo username");

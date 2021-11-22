@@ -27,7 +27,28 @@ public class Comandi {
         return -1;
     }
 
-    public void commandReader(String testoRicevuto){
+    public int WhereIsKeyUtente(String testoRicevuto){
+        for(int i = 0; i < testoRicevuto.length(); i++){
+            if(testoRicevuto.charAt(i) == '@'){
+                return i;
+            } 
+        }
+        return -1;
+    }
+
+    public String nomeUtente(String testoRicevuto) throws Exception{
+        String nUtente = null;
+        for(int i = WhereIsKeyUtente(testoRicevuto); i < testoRicevuto.length(); i++){
+            if(testoRicevuto.charAt(i) != ' '){
+                nUtente += testoRicevuto.charAt(i);
+            }
+            return nUtente;
+        }
+        throw new Exception("C'è stato un errore");
+    }
+
+    public void commandReader(String testoRicevuto) throws Exception
+    {
         char comando;
         String text;
         if(testoRicevuto.charAt(1) != '?'){
@@ -38,22 +59,26 @@ public class Comandi {
         switch (comando) {
             case 'E':
                 //Esegue il logout dell'utente
+                logout();
                 break;
             case 'T':
                 //Invia Messaggio Singola Persona
+                messageTell(testoRicevuto);
                 break;
             case 'A':
                 //Invia messaggio a tutti
+                messageToAll(testoRicevuto);
                 break;
            /*  case 'B':
                 //Banna l'utente selezionato
                 break; */
             case 'L':
                 //Mostra gli utenti connessi
+                listUser();
                 break;
             case '?':
                 //Mostra una lista dei comandi disponibili
-                this.helpMessage();
+                this.helpMessage(nomeUtente(testoRicevuto));
                 break;
             default:
                 try {
@@ -67,7 +92,7 @@ public class Comandi {
 
     public void helpMessage(String nomeUtente){
         System.out.println(chiaveComando + "E ---> Serve per eseguire il logout dalla chat, la sintassi è: " + chiaveComando + "E\n");
-        System.out.println(chiaveComando + "T ---> Serve per inviare un messaggio a un solo utente in particolare, la sintassi è: " + chiaveComando + "T <NOME UTENTE> <MESSAGGIO>\n");
+        System.out.println(chiaveComando + "T ---> Serve per inviare un messaggio a un solo utente in particolare, la sintassi è: " + chiaveComando + "T @<NOME UTENTE> <MESSAGGIO>\n");
         System.out.println(chiaveComando + "A ---> Serve per inviare un messaggio a tutti i partecipanti alla chat, la sintassi è: " + chiaveComando + "A <MESSAGGIO>\n");
         //System.out.println(chiaveComando + "B ---> Serve per bannare (rimuovere) dalla chat un utente specifico, la sintassi è: " + chiaveComando + "B <NOME UTENTE>\n");
         System.out.println(chiaveComando + "L ---> Serve per listare (mostrare) tutti gli utenti della chat, la sintassi è: " + chiaveComando + "L\n");
